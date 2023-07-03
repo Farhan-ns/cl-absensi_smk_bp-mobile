@@ -1,3 +1,5 @@
+import 'package:absensi_smk_bp/commons/globals.dart';
+import 'package:absensi_smk_bp/hive_models/profile_hive_model.dart';
 import 'package:absensi_smk_bp/screens/attendance/attendance_history_detail_screen.dart';
 import 'package:absensi_smk_bp/screens/home_screen.dart';
 import 'package:absensi_smk_bp/screens/leave/leave_request.dart';
@@ -6,8 +8,12 @@ import 'package:absensi_smk_bp/screens/profile/edit_profile.dart';
 import 'package:absensi_smk_bp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProfileHiveModelAdapter());
+
   runApp(const MyApp());
 }
 
@@ -19,7 +25,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
       path: '/home',
@@ -27,7 +33,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/edit-profile',
-      builder: (context, state) => const EditProfileScreen(),
+      builder: (context, state) => EditProfileScreen(),
     ),
     GoRoute(
       path: '/attendance-history-detail',
@@ -38,7 +44,7 @@ final _router = GoRouter(
       builder: (context, state) => const LeaveRequestScreen(),
     ),
   ],
-  initialLocation: '/home',
+  initialLocation: '/',
 );
 
 class MyApp extends StatelessWidget {
@@ -50,6 +56,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: appTitle,
+      scaffoldMessengerKey: snackbarKey,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFFfafafa),

@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:absensi_smk_bp/commons/auth_manager.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    AuthManager.hasToken().then((hasToken) {
+      if (hasToken) {
+        context.go('/home');
+      } else {
+        context.go('/login');
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
-        child: GestureDetector(
-          onTap: () => context.go('/login'),
-          child: const SizedBox.expand(
-            child: Image(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                'assets/images/sp.png',
-              ),
+        child: SizedBox.expand(
+          child: Image(
+            fit: BoxFit.cover,
+            image: AssetImage(
+              'assets/images/sp.png',
             ),
           ),
         ),

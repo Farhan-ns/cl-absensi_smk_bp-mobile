@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyElevatedButton extends ElevatedButton {
   MyElevatedButton(
     BuildContext context,
-    String text, {
+    Widget child, {
     super.key,
     required super.onPressed,
   }) : super(
@@ -20,12 +20,6 @@ class MyElevatedButton extends ElevatedButton {
               ),
             ),
           ),
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: const Color(0xFFfafafa),
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
+          child: child,
         );
 }

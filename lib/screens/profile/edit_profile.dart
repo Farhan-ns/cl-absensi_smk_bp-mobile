@@ -1,15 +1,23 @@
 import 'package:absensi_smk_bp/components/appbar.dart';
 import 'package:absensi_smk_bp/components/button.dart';
+import 'package:absensi_smk_bp/components/button_circular_progress.dart';
+import 'package:absensi_smk_bp/components/button_label.dart';
 import 'package:absensi_smk_bp/components/textfield.dart';
+import 'package:absensi_smk_bp/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
+  EditProfileScreen({super.key});
+
+  final ProfileController controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'Edit Profil'),
+      appBar: MyAppBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 26),
@@ -17,7 +25,11 @@ class EditProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Edit Profil'),
+                const SizedBox(height: 8),
+                Text(
+                  'Edit Profil',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -45,27 +57,78 @@ class EditProfileScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 5),
-                const Text('Nama Lengkap'),
-                const SizedBox(height: 5),
-                MyTextField(textInputType: TextInputType.text),
-                const SizedBox(height: 12),
-                const Text('Nomor Telepon'),
-                const SizedBox(height: 5),
-                MyTextField(textInputType: TextInputType.phone),
-                const SizedBox(height: 12),
-                const Text('Email'),
-                const SizedBox(height: 5),
-                MyTextField(textInputType: TextInputType.emailAddress),
-                const SizedBox(height: 12),
-                const Text('Tanggal Lahir'),
-                const SizedBox(height: 5),
-                MyTextField(textInputType: TextInputType.datetime),
-                const SizedBox(height: 12),
-                const Text('Alamat Rumah'),
+                Text(
+                  'Nama Lengkap',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
                 const SizedBox(height: 5),
                 MyTextField(
                   textInputType: TextInputType.text,
-                  heightSpan: 3,
+                  controller: controller.nameTxtController,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Nomor Telepon',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 5),
+                MyTextField(
+                  textInputType: TextInputType.phone,
+                  controller: controller.phoneTxtController,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Email',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 5),
+                MyTextField(
+                  textInputType: TextInputType.emailAddress,
+                  controller: controller.emailTxtController,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Tanggal Lahir',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 5),
+                TextField(
+                  readOnly: true,
+                  controller: controller.birthdateTxtController,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    suffixIcon: const Icon(Icons.calendar_today),
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(5),
+                      gapPadding: 9,
+                    ),
+                  ),
+                  onTap: () async {
+                    var date = DateTime.now();
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: date,
+                      firstDate: DateTime(1953),
+                      lastDate: DateTime(2100),
+                    );
+
+                    if (pickedDate != null) {
+                      String formattedDate =
+                          DateFormat('dd-MM-yyyy').format(pickedDate);
+                      controller.birthdateTxtController.text = formattedDate;
+                    }
+                  },
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Alamat Rumah',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 5),
+                MyTextField(
+                  textInputType: TextInputType.datetime,
+                  controller: controller.addressTxtController,
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -73,8 +136,15 @@ class EditProfileScreen extends StatelessWidget {
                     Expanded(
                       child: MyElevatedButton(
                         context,
-                        'Simpan',
-                        onPressed: () {},
+                        Obx(
+                          () => controller.isSubmitting.value
+                              ? const ButtonCircularProgress()
+                              : const ButtonLabel('Simpan'),
+                        ),
+                        onPressed: () async {
+                          var success = await controller.editProfile();
+                          if (success && context.mounted) context.pop();
+                        },
                       ),
                     ),
                   ],

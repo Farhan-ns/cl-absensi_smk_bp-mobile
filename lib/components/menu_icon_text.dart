@@ -11,20 +11,23 @@ class MenuIconText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(padding),
-            child: Image(
-              image: AssetImage(image),
+      child: InkWell(
+        onTap: () {},
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(padding),
+              child: Image(
+                image: AssetImage(image),
+              ),
             ),
-          ),
-          Text(
-            text,
-            textAlign: TextAlign.center,
-          ),
-        ],
+            Text(
+              text,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

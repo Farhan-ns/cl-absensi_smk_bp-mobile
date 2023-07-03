@@ -21,14 +21,21 @@ class InfoChip extends StatelessWidget {
       children: [
         CircleAvatar(
           backgroundImage: AssetImage(image),
+          radius: 27,
         ),
+        const SizedBox(width: 8),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(name),
             Text(date),
           ],
         ),
-        child
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 1,
+          child: child,
+        )
       ],
     );
   }

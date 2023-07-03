@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _tabs = [
     const HomeTab(),
     const HistoryTab(),
-    const ProfileTab(),
+    ProfileTab(),
   ];
 
   final List<PersistentBottomNavBarItem> _navbarItems = [

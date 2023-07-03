@@ -1,10 +1,16 @@
 import 'package:absensi_smk_bp/components/button.dart';
+import 'package:absensi_smk_bp/components/button_circular_progress.dart';
+import 'package:absensi_smk_bp/components/button_label.dart';
 import 'package:absensi_smk_bp/components/textfield.dart';
+import 'package:absensi_smk_bp/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final LoginController controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,23 +51,34 @@ class LoginScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox(height: 5),
-                  MyTextField(textInputType: TextInputType.emailAddress),
+                  MyTextField(
+                    textInputType: TextInputType.emailAddress,
+                    controller: controller.emailTxtController,
+                  ),
                   const SizedBox(height: 15),
                   Text(
                     'Password',
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox(height: 5),
-                  MyTextField(textInputType: TextInputType.emailAddress),
+                  MyTextField(
+                    textInputType: TextInputType.emailAddress,
+                    controller: controller.passwordTxtController,
+                  ),
                   const SizedBox(height: 15),
                   Row(
                     children: [
                       Expanded(
                         child: MyElevatedButton(
                           context,
-                          'LOGIN',
-                          onPressed: () {
-                            context.go('/home');
+                          Obx(
+                            () => controller.isSubmitting.value
+                                ? const ButtonCircularProgress()
+                                : const ButtonLabel('LOGIN'),
+                          ),
+                          onPressed: () async {
+                            var success = await controller.attemptLogin();
+                            if (success && context.mounted) context.go('/home');
                           },
                         ),
                       ),
