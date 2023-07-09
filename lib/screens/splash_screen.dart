@@ -1,6 +1,6 @@
+import 'package:absensi_smk_bp/commons/auth_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:absensi_smk_bp/commons/auth_manager.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

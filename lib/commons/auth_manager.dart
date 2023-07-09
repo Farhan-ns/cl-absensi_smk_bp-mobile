@@ -4,7 +4,6 @@ class AuthManager {
   static Future<String> getToken() async {
     Box authBox = await _getAuthBox();
     String token = authBox.get('token') ?? '';
-    print("Auth Token: $token");
     return token;
   }
 

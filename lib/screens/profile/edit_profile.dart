@@ -4,6 +4,7 @@ import 'package:absensi_smk_bp/components/button_circular_progress.dart';
 import 'package:absensi_smk_bp/components/button_label.dart';
 import 'package:absensi_smk_bp/components/textfield.dart';
 import 'package:absensi_smk_bp/controllers/profile_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +13,7 @@ import 'package:intl/intl.dart';
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
 
-  final ProfileController controller = Get.put(ProfileController());
+  final ProfileController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -34,25 +35,36 @@ class EditProfileScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Stack(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      children: [
-                        const CircleAvatar(
-                          radius: 80,
-                          backgroundImage: AssetImage('assets/images/ian.jpg'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(8),
-                            backgroundColor: Colors.blue, // <-- Button color
-                            foregroundColor: Colors.red, // <-- Splash color
-                          ),
-                          child:
-                              const Icon(Icons.camera_alt, color: Colors.white),
-                        )
-                      ],
+                    Obx(
+                      () => Stack(
+                        alignment: AlignmentDirectional.bottomEnd,
+                        children: [
+                          controller.profile.value.profilePicture != null
+                              ? CircleAvatar(
+                                  radius: 80,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    controller.profile.value.getprofilePicture,
+                                  ),
+                                )
+                              : CircleAvatar(
+                                  radius: 80,
+                                  backgroundImage: AssetImage(
+                                    controller.profile.value.getprofilePicture,
+                                  ),
+                                ),
+                          ElevatedButton(
+                            onPressed: () => controller.pickImage(),
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(8),
+                              backgroundColor: Colors.blue, // <-- Button color
+                              foregroundColor: Colors.red, // <-- Splash color
+                            ),
+                            child: const Icon(Icons.camera_alt,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

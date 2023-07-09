@@ -35,7 +35,7 @@ class APIService {
 
     return await http.get(
       url,
-      headers: await _initHeaders(),
+      headers: await initHeaders(),
     );
   }
 
@@ -54,8 +54,42 @@ class APIService {
     return await http.post(
       url,
       body: jsonEncode(data),
-      headers: await _initHeaders(),
+      headers: await initHeaders(),
     );
+  }
+
+  static Future<Response> postMultipart(
+    String endpoint,
+    Map<String, String> data,
+    String path,
+  ) async {
+    Uri url = Uri.http(baseUrl, baseApi + endpoint);
+    var request = http.MultipartRequest('POST', url);
+
+    request.headers.addAll(await initHeaders());
+
+    request.fields.addAll(data);
+    request.files
+        .add(await http.MultipartFile.fromPath('absence_document', path));
+
+    var streamedResponse = await request.send();
+    var response = http.Response.fromStream(streamedResponse);
+    return response;
+  }
+
+  static Future<Response> postProfilePicture(
+    String endpoint,
+    String path,
+  ) async {
+    Uri url = Uri.http(baseUrl, baseApi + endpoint, {'_method': 'PUT'});
+    var request = http.MultipartRequest('POST', url);
+
+    request.headers.addAll(await initHeaders());
+    request.files.add(await http.MultipartFile.fromPath('image', path));
+
+    var streamedResponse = await request.send();
+    var response = http.Response.fromStream(streamedResponse);
+    return response;
   }
 
   static Future<Response> put(
@@ -73,7 +107,7 @@ class APIService {
     return await http.put(
       url,
       body: jsonEncode(data),
-      headers: await _initHeaders(),
+      headers: await initHeaders(),
     );
   }
 
@@ -83,7 +117,7 @@ class APIService {
 
   //   return await http.delete(
   //     url,
-  //     headers: await _initHeaders(),
+  //     headers: await initHeaders(),
   //   );
   // }
 
@@ -106,7 +140,7 @@ class APIService {
     };
   }
 
-  static Future<Map<String, String>> _initHeaders() async {
+  static Future<Map<String, String>> initHeaders() async {
     String token = await AuthManager.getToken();
 
     return {

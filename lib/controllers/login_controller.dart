@@ -67,6 +67,7 @@ class LoginController extends GetxController {
         ProfileHiveModel model =
             HiveModelService.makeHiveProfileModel(body['data']['user']);
         Box profileBox = await BoxManager.getBox('profile');
+        profileBox.delete('profile');
         profileBox.put('profile', model);
 
         return true;
@@ -85,6 +86,9 @@ class LoginController extends GetxController {
   bool logout() {
     try {
       AuthManager.removeToken();
+      BoxManager.getBox('profile').then(
+        (profileBox) => profileBox.delete('profile'),
+      );
       return true;
     } catch (e) {
       final snackBar =

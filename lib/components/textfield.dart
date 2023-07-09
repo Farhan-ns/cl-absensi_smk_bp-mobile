@@ -6,11 +6,13 @@ class MyTextField extends TextField {
     TextInputType textInputType = TextInputType.text,
     required TextEditingController controller,
     int heightSpan = 1,
+    bool enabled = true,
   }) : super(
           keyboardType: textInputType,
           minLines: heightSpan,
           maxLines: heightSpan,
           controller: controller,
+          enabled: enabled,
           decoration: InputDecoration(
             isDense: true,
             border: OutlineInputBorder(

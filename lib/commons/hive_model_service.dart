@@ -8,5 +8,6 @@ class HiveModelService {
         ..email = user['email']
         ..birthdate = user['birthdate']
         ..phone = user['phone']
-        ..address = user['address'];
+        ..address = user['address']
+        ..profilePicture = user['profile_picture'];
 }

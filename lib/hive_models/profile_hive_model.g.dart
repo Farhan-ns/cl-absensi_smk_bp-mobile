@@ -22,13 +22,14 @@ class ProfileHiveModelAdapter extends TypeAdapter<ProfileHiveModel> {
       ..birthdate = fields[2] as String
       ..phone = fields[3] as String
       ..email = fields[4] as String
-      ..address = fields[5] as String;
+      ..address = fields[5] as String
+      ..profilePicture = fields[6] as String?;
   }
 
   @override
   void write(BinaryWriter writer, ProfileHiveModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -40,7 +41,9 @@ class ProfileHiveModelAdapter extends TypeAdapter<ProfileHiveModel> {
       ..writeByte(4)
       ..write(obj.email)
       ..writeByte(5)
-      ..write(obj.address);
+      ..write(obj.address)
+      ..writeByte(6)
+      ..write(obj.profilePicture);
   }
 
   @override
