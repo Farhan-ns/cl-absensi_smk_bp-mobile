@@ -139,7 +139,7 @@ class EditProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 MyTextField(
-                  textInputType: TextInputType.datetime,
+                  textInputType: TextInputType.streetAddress,
                   controller: controller.addressTxtController,
                 ),
                 const SizedBox(height: 12),

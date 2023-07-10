@@ -7,12 +7,14 @@ class MyTextField extends TextField {
     required TextEditingController controller,
     int heightSpan = 1,
     bool enabled = true,
+    bool obscureText = false,
   }) : super(
           keyboardType: textInputType,
           minLines: heightSpan,
           maxLines: heightSpan,
           controller: controller,
           enabled: enabled,
+          obscureText: obscureText,
           decoration: InputDecoration(
             isDense: true,
             border: OutlineInputBorder(
