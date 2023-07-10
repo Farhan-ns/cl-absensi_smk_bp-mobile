@@ -1,4 +1,5 @@
 import 'package:absensi_smk_bp/commons/box_manager.dart';
+import 'package:absensi_smk_bp/commons/globals.dart';
 import 'package:absensi_smk_bp/components/appbar.dart';
 import 'package:absensi_smk_bp/components/button_circular_progress.dart';
 import 'package:absensi_smk_bp/components/button_icon.dart';
@@ -50,6 +51,12 @@ class _HomeTabState extends State<HomeTab> {
     });
   }
 
+  Future<void> _refresh() async {
+    leaveController.fetchLeavesHistory();
+    attendanceController.fetchTodaysAttendance();
+    notificationController.fetchNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,185 +98,191 @@ class _HomeTabState extends State<HomeTab> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Obx(
-                  () => RichText(
-                    text: TextSpan(
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.normal),
-                      text: 'Halo, ',
-                      children: [
-                        TextSpan(
-                          text: profileController.name.string,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => Column(
-                    children: [
-                      if (attendanceController.isFetching.isTrue) ...[
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      ] else ...[
-                        if (attendanceController.connectionError.isTrue) ...[
-                          const ErrorAttendanceCard(),
-                        ] else if (attendanceController
-                                .hasCheckinToday.isTrue &&
-                            attendanceController.hasCheckoutToday.isTrue) ...[
-                          const CompleteAttendanceCard(),
-                        ] else if (attendanceController
-                                .hasCheckinToday.isTrue &&
-                            attendanceController.hasCheckoutToday.isFalse) ...[
-                          CheckoutCard(attendanceController),
-                        ] else if (attendanceController
-                            .hasCheckinToday.isFalse) ...[
-                          CheckinCard(attendanceController),
-                        ] else ...[
-                          const Text('Something went wrong'),
-                        ]
-                      ],
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Fitur',
-                  // style: TextStyle(fontWeight: FontWeight.bold),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                Row(
-                  children: [
-                    MenuIconText(
-                      image: 'assets/images/checklist.png',
-                      text: 'Pengajuan Dinas',
-                      callback: () {
-                        context.push(
-                          '/leave-request',
-                          extra: LeaveCategory.officialLeave,
-                        );
-                      },
-                    ),
-                    MenuIconText(
-                      image: 'assets/images/absence.png',
-                      text: 'Izin Kehadiran',
-                      callback: () {
-                        context.push(
-                          '/leave-request',
-                          extra: LeaveCategory.otherLeave,
-                        );
-                      },
-                    ),
-                    MenuIconText(
-                      image: 'assets/images/leave.png',
-                      text: 'Cuti Kehadiran',
-                      callback: () {
-                        context.push(
-                          '/leave-request',
-                          extra: LeaveCategory.ptoLeave,
-                        );
-                      },
-                    ),
-                    MenuIconText(
-                      image: 'assets/images/sick.png',
-                      text: 'Izin \nSakit',
-                      callback: () {
-                        context.push(
-                          '/leave-request',
-                          extra: LeaveCategory.sickLeave,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'History',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Recently'),
-                    InkWell(
-                      onTap: () {
-                        PersistentNavBarNavigator.pushNewScreen(
-                          context,
-                          screen: const HistoryTab(),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
-                        );
-                      },
-                      child: const Row(
+      body: RefreshIndicator(
+        key: refreshIndicatorKey,
+        onRefresh: () => _refresh(),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  Obx(
+                    () => RichText(
+                      text: TextSpan(
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.normal),
+                        text: 'Halo, ',
                         children: [
-                          Text(
-                            'Lihat Semua',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          Icon(
-                            Icons.chevron_right,
-                            color: Colors.blue,
+                          TextSpan(
+                            text: profileController.name.string,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Obx(
-                  () => Column(
+                  ),
+                  Obx(
+                    () => Column(
+                      children: [
+                        if (attendanceController.isFetching.isTrue) ...[
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        ] else ...[
+                          if (attendanceController.connectionError.isTrue) ...[
+                            const ErrorAttendanceCard(),
+                          ] else if (attendanceController
+                                  .hasCheckinToday.isTrue &&
+                              attendanceController.hasCheckoutToday.isTrue) ...[
+                            const CompleteAttendanceCard(),
+                          ] else if (attendanceController
+                                  .hasCheckinToday.isTrue &&
+                              attendanceController
+                                  .hasCheckoutToday.isFalse) ...[
+                            CheckoutCard(attendanceController),
+                          ] else if (attendanceController
+                              .hasCheckinToday.isFalse) ...[
+                            CheckinCard(attendanceController),
+                          ] else ...[
+                            const Text('Something went wrong'),
+                          ]
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Fitur',
+                    // style: TextStyle(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Row(
                     children: [
-                      for (Leave leave in leaveController.leaveList.take(3))
-                        InkWell(
-                          onTap: () {
-                            if (context.mounted) {
-                              context.push('/leave-history-detail',
-                                  extra: leave);
-                            }
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            child: InfoChip(
-                              imageProvider: profileController
-                                          .profile.value.profilePicture !=
-                                      null
-                                  ? CachedNetworkImageProvider(
-                                      profileController
-                                          .profile.value.getprofilePicture,
-                                    )
-                                  : AssetImage(
-                                      profileController
-                                          .profile.value.getprofilePicture,
-                                    ) as ImageProvider,
-                              name: leaveController.teacherName.string,
-                              date: leave.formattedDate,
-                              child: StatusChip(
-                                leaveCategory: leave.leaveType,
+                      MenuIconText(
+                        image: 'assets/images/checklist.png',
+                        text: 'Pengajuan Dinas',
+                        callback: () {
+                          context.push(
+                            '/leave-request',
+                            extra: LeaveCategory.officialLeave,
+                          );
+                        },
+                      ),
+                      MenuIconText(
+                        image: 'assets/images/absence.png',
+                        text: 'Izin Kehadiran',
+                        callback: () {
+                          context.push(
+                            '/leave-request',
+                            extra: LeaveCategory.otherLeave,
+                          );
+                        },
+                      ),
+                      MenuIconText(
+                        image: 'assets/images/leave.png',
+                        text: 'Cuti Kehadiran',
+                        callback: () {
+                          context.push(
+                            '/leave-request',
+                            extra: LeaveCategory.ptoLeave,
+                          );
+                        },
+                      ),
+                      MenuIconText(
+                        image: 'assets/images/sick.png',
+                        text: 'Izin \nSakit',
+                        callback: () {
+                          context.push(
+                            '/leave-request',
+                            extra: LeaveCategory.sickLeave,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'History',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Recently'),
+                      InkWell(
+                        onTap: () {
+                          PersistentNavBarNavigator.pushNewScreen(
+                            context,
+                            screen: const HistoryTab(),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                        },
+                        child: const Row(
+                          children: [
+                            Text(
+                              'Lihat Semua',
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              color: Colors.blue,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Obx(
+                    () => Column(
+                      children: [
+                        for (Leave leave in leaveController.leaveList.take(3))
+                          InkWell(
+                            onTap: () {
+                              if (context.mounted) {
+                                context.push('/leave-history-detail',
+                                    extra: leave);
+                              }
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 12),
+                              child: InfoChip(
+                                imageProvider: profileController
+                                            .profile.value.profilePicture !=
+                                        null
+                                    ? CachedNetworkImageProvider(
+                                        profileController
+                                            .profile.value.getprofilePicture,
+                                      )
+                                    : AssetImage(
+                                        profileController
+                                            .profile.value.getprofilePicture,
+                                      ) as ImageProvider,
+                                name: leaveController.teacherName.string,
+                                date: leave.formattedDate,
+                                child: StatusChip(
+                                  leaveCategory: leave.leaveType,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
