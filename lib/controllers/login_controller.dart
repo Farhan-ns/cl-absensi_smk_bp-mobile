@@ -32,10 +32,9 @@ class LoginController extends GetxController {
   }
 
   Future<bool> attemptLogin() async {
-    String email = 'teacher@gmail.com';
-    String password = 'pass123';
-    // String email = emailTxtController.text;
-    // String password = passwordTxtController.text;
+    if (!_validateInputs()) return false;
+    String email = emailTxtController.text;
+    String password = passwordTxtController.text;
 
     try {
       isSubmitting.value = true;
@@ -81,6 +80,32 @@ class LoginController extends GetxController {
       isSubmitting.value = false;
     }
     return false;
+  }
+
+  bool _validateInputs() {
+    String email = emailTxtController.text;
+    String password = passwordTxtController.text;
+    SnackBar snackBar;
+
+    if (email.isEmpty || password.isEmpty) {
+      snackBar = SnackBarTypes.createFailedSnackbar(
+        'Harap isi semua input.',
+        duration: 2,
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
+      return false;
+    }
+
+    if (!email.isEmail) {
+      snackBar = SnackBarTypes.createFailedSnackbar(
+        'Harap isi field email dengan email yang benar.',
+        duration: 2,
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
+      return false;
+    }
+
+    return true;
   }
 
   bool logout() {
