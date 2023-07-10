@@ -19,9 +19,15 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              height: 170,
-              color: Colors.grey.shade400,
+            // Container(
+            //   // height: 170,
+            //   color: Colors.grey.shade400,
+            //   child: ),
+            // ),
+            Image.asset(
+              'assets/images/login-banner.jpg',
+              height: 250,
+              fit: BoxFit.fill,
             ),
             const SizedBox(height: 25),
             const Image(
@@ -92,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 60),
+                    padding: const EdgeInsets.only(top: 30),
                     child: Transform.flip(
                       flipX: true,
                       child: const Image(

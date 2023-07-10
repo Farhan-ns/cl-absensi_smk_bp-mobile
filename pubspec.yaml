@@ -96,6 +96,7 @@ flutter:
     - assets/images/ian.jpg
     - assets/images/surat_izin.jpeg
     - assets/images/blank_user.png
+    - assets/images/login-banner.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
