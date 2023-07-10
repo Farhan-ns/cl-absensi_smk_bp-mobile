@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
 class APIService {
-  // static const String baseUrl = 'http://127.0.0.1:8000/api';
   // static const String baseUrl = '192.168.1.33:8000';
   static const String baseUrl = '192.168.43.138:8000';
   static const String baseApi = '/api';
@@ -110,28 +109,6 @@ class APIService {
       headers: await initHeaders(),
     );
   }
-
-  // static Future<Response> delete(String endpoint) async {
-  //   Uri url = Uri.http(baseUrl, '/api$endpoint');
-  //   print(url);
-
-  //   return await http.delete(
-  //     url,
-  //     headers: await initHeaders(),
-  //   );
-  // }
-
-  // static String getProfilePicUrl() {
-  //   var baseURL = API.baseUrl;
-  //   return Uri.http(baseURL, "/api/profile/pp").toString();
-  // }
-
-  // static Future<Map<String, String>> makeAuthHeaders() async {
-  //   String token = await TokenManager.getToken();
-  //   return {
-  //     'Authorization': 'Bearer $token',
-  //   };
-  // }
 
   static Map<String, String> _initHeadersWithoutToken() {
     return {
