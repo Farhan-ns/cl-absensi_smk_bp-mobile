@@ -109,6 +109,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
                                 initialDate: date,
                                 firstDate: DateTime(1953),
                                 lastDate: DateTime(2100),
+                                locale: const Locale('id', 'ID'),
                               );
 
                               if (pickedDate != null) {
@@ -152,6 +153,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
                                 initialDate: date,
                                 firstDate: DateTime(1953),
                                 lastDate: DateTime(2100),
+                                locale: const Locale('id', 'ID'),
                               );
 
                               if (pickedDate != null) {

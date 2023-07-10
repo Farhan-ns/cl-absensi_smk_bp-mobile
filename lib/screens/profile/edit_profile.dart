@@ -123,6 +123,7 @@ class EditProfileScreen extends StatelessWidget {
                       initialDate: date,
                       firstDate: DateTime(1953),
                       lastDate: DateTime(2100),
+                      locale: const Locale('id', 'ID'),
                     );
 
                     if (pickedDate != null) {
