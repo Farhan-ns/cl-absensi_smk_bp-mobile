@@ -47,7 +47,10 @@ class LeaveController extends GetxController {
   }
 
   void pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+    );
 
     if (result != null) {
       // File file = File(result.files.single.path!);
