@@ -53,15 +53,22 @@ class EditProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                           ElevatedButton(
-                            onPressed: () => controller.pickImage(),
+                            onPressed: () {
+                              if (controller.isSubmitting.isTrue) return;
+                              controller.pickImage();
+                            },
                             style: ElevatedButton.styleFrom(
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(8),
                               backgroundColor: Colors.blue, // <-- Button color
                               foregroundColor: Colors.red, // <-- Splash color
                             ),
-                            child: const Icon(Icons.camera_alt,
-                                color: Colors.white),
+                            child: controller.isSubmitting.isTrue
+                                ? const ButtonCircularProgress()
+                                : const Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.white,
+                                  ),
                           )
                         ],
                       ),
