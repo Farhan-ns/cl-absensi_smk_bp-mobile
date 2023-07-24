@@ -71,6 +71,17 @@ class _HomeTabState extends State<HomeTab> {
             child: Obx(
               () => Column(
                 children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Notifikasi',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                  ),
                   for (var notification
                       in notificationController.notificationList)
                     Container(
