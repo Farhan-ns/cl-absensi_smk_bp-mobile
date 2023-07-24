@@ -1,3 +1,5 @@
+import 'package:absensi_smk_bp/commons/globals.dart';
+import 'package:absensi_smk_bp/commons/snackbar_types.dart';
 import 'package:absensi_smk_bp/components/appbar.dart';
 import 'package:absensi_smk_bp/controllers/profile_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -222,6 +224,43 @@ class ProfileTab extends StatelessWidget {
                                 ],
                               ),
                             ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Card(
+                        surfaceTintColor: const Color(0xFFffffff),
+                        elevation: 10,
+                        child: InkWell(
+                          onTap: () async {
+                            bool? success =
+                                await context.push('/change-password');
+
+                            if (success ?? false) {
+                              final snackBar =
+                                  SnackBarTypes.createSuccessSnackbar(
+                                      'Berhasil mengubah password');
+                              snackbarKey.currentState?.showSnackBar(snackBar);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.lock_open,
+                                  color: Colors.blue,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  'Ganti Password',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

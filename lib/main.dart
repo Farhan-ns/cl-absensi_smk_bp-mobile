@@ -5,6 +5,7 @@ import 'package:absensi_smk_bp/screens/attendance/leave_history_detail_screen.da
 import 'package:absensi_smk_bp/screens/home_screen.dart';
 import 'package:absensi_smk_bp/screens/leave/leave_request.dart';
 import 'package:absensi_smk_bp/screens/login_screen.dart';
+import 'package:absensi_smk_bp/screens/profile/change_password_screen.dart';
 import 'package:absensi_smk_bp/screens/profile/edit_profile.dart';
 import 'package:absensi_smk_bp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/edit-profile',
       builder: (context, state) => EditProfileScreen(),
+    ),
+    GoRoute(
+      path: '/change-password',
+      builder: (context, state) => ChangePasswordScreen(),
     ),
     GoRoute(
       path: '/leave-history-detail',
