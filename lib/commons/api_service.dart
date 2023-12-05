@@ -6,12 +6,13 @@ import 'package:http/http.dart' as http;
 
 class APIService {
   // static const String baseUrl = '192.168.1.33:8000';
-  static const String baseUrl = '192.168.43.138:8000';
+  // static const String baseUrl = '192.168.43.138:8000';
+  static const String baseUrl = 'smkbinaputracihampelas.sch.id';
   static const String baseApi = '/api';
 
   static Future<Response> authenticate(Map data) async {
     String endpoint = "/login";
-    Uri url = Uri.http(baseUrl, baseApi + endpoint);
+    Uri url = Uri.https(baseUrl, baseApi + endpoint);
 
     return await http.post(
       url,
@@ -27,9 +28,9 @@ class APIService {
     Uri url;
 
     if (queries != null) {
-      url = Uri.http(baseUrl, baseApi + endpoint, queries);
+      url = Uri.https(baseUrl, baseApi + endpoint, queries);
     } else {
-      url = Uri.http(baseUrl, baseApi + endpoint);
+      url = Uri.https(baseUrl, baseApi + endpoint);
     }
 
     return await http.get(
@@ -46,9 +47,9 @@ class APIService {
     Uri url;
 
     if (queries != null) {
-      url = Uri.http(baseUrl, baseApi + endpoint, queries);
+      url = Uri.https(baseUrl, baseApi + endpoint, queries);
     } else {
-      url = Uri.http(baseUrl, baseApi + endpoint);
+      url = Uri.https(baseUrl, baseApi + endpoint);
     }
     return await http.post(
       url,
@@ -62,7 +63,7 @@ class APIService {
     Map<String, String> data,
     String path,
   ) async {
-    Uri url = Uri.http(baseUrl, baseApi + endpoint);
+    Uri url = Uri.https(baseUrl, baseApi + endpoint);
     var request = http.MultipartRequest('POST', url);
 
     request.headers.addAll(await initHeaders());
@@ -80,7 +81,7 @@ class APIService {
     String endpoint,
     String path,
   ) async {
-    Uri url = Uri.http(baseUrl, baseApi + endpoint, {'_method': 'PUT'});
+    Uri url = Uri.https(baseUrl, baseApi + endpoint, {'_method': 'PUT'});
     var request = http.MultipartRequest('POST', url);
 
     request.headers.addAll(await initHeaders());
@@ -99,9 +100,9 @@ class APIService {
     Uri url;
 
     if (queries != null) {
-      url = Uri.http(baseUrl, baseApi + endpoint, queries);
+      url = Uri.https(baseUrl, baseApi + endpoint, queries);
     } else {
-      url = Uri.http(baseUrl, baseApi + endpoint);
+      url = Uri.https(baseUrl, baseApi + endpoint);
     }
     return await http.put(
       url,

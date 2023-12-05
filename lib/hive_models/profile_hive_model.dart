@@ -31,7 +31,7 @@ class ProfileHiveModel extends HiveObject {
       return 'assets/images/blank_user.png';
     }
 
-    Uri url = Uri.http(APIService.baseUrl, '/profile_pictures/teachers');
+    Uri url = Uri.https(APIService.baseUrl, '/profile_pictures/teachers');
     return "$url/$profilePicture";
   }
 }

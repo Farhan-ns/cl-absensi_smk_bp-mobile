@@ -45,7 +45,7 @@ class Leave {
   }
 
   String get docUrl {
-    return Uri.http(APIService.baseUrl, "${APIService.baseApi}/leave/doc/$id")
+    return Uri.https(APIService.baseUrl, "${APIService.baseApi}/leave/doc/$id")
         .toString();
   }
 
@@ -54,8 +54,12 @@ class Leave {
         absenceDocument: json["absence_document"],
         absenceNote: json["absence_note"],
         absenceReason: json["absence_reason"],
-        approvalStatus: int.parse(json["approval_status"]),
-        leaveType: int.parse(json["leave_type"]),
+        approvalStatus: json["approval_status"] is String
+            ? int.parse(json["approval_status"])
+            : json["approval_status"],
+        leaveType: json["leave_type"] is String
+            ? int.parse(json["leave_type"])
+            : json["leave_type"],
         fromDate: DateTime.parse(json["from_date"]),
         toDate: DateTime.parse(json["to_date"]),
         createdAt: DateTime.parse(json["created_at"]),
